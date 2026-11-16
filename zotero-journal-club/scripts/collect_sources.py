@@ -21,9 +21,49 @@ def norm_doi(value):
 
 
 def unwrap(data):
-    if 'result' in data:
-        data = data['result']
-    return data
+    """Accept decoded results and the text/structured envelopes returned by MCP."""
+    for _ in range(6):
+        if not isinstance(data, dict):
+            raise ValueError('Zotero search output must be a JSON object')
+        if data.get('isError') or data.get('ok') is False:
+            details = data.get('result', data.get('content', 'unknown error'))
+            raise ValueError(f'Zotero search failed: {details}')
+        if 'results' in data:
+            if not isinstance(data['results'], list):
+                raise ValueError('Zotero search results must be a list')
+            return data
+        if isinstance(data.get('structuredContent'), dict):
+            data = data['structuredContent']
+        elif isinstance(data.get('result'), dict):
+            data = data['result']
+        elif isinstance(data.get('content'), list):
+            candidates = []
+            for block in data['content']:
+                if not isinstance(block, dict) or block.get('type') != 'text':
+                    continue
+                try:
+                    value = json.loads(block.get('text', ''))
+                except (TypeError, json.JSONDecodeError):
+                    continue
+                if isinstance(value, dict) and any(key in value for key in ('results', 'result', 'ok')):
+                    candidates.append(value)
+            if len(candidates) != 1:
+                raise ValueError('Expected exactly one JSON search result in MCP text content')
+            data = candidates[0]
+        else:
+            raise ValueError('No Zotero search results found in the supplied JSON')
+    raise ValueError('Zotero search output has too many nested envelopes')
+
+
+def resolve_search(data, **identity):
+    data = unwrap(data)
+    count = data.get('returnedCount', len(data['results']))
+    total = data.get('totalCount')
+    offset = data.get('offset', 0)
+    incomplete = bool(data.get('limited') or data.get('nextOffset') is not None or offset)
+    if isinstance(total, int) and isinstance(count, int):
+        incomplete = incomplete or count < total
+    return resolve_candidates(data['results'], limited=incomplete, **identity)
 
 
 def resolve_candidates(results, *, title=None, doi=None, key=None, author=None, year=None, limited=False):
@@ -55,12 +95,18 @@ def inspect_mineru(cache, *, attachment_id=None, attachment_key=None, parent_key
     cache = Path(cache)
     source_path = cache / '_llm_source.json'
     identity = json.loads(source_path.read_text(encoding='utf-8')) if source_path.is_file() else None
+    if identity is not None and not isinstance(identity, dict):
+        raise ValueError('MinerU source identity must be a JSON object')
     checks = [('attachmentId', attachment_id), ('attachmentKey', attachment_key), ('parentItemKey', parent_key)]
     conflicts = [name for name, expected in checks if expected is not None and identity and
                  name in identity and str(identity[name]).casefold() != str(expected).casefold()]
     evidence = [name for name, expected in checks if expected is not None and identity and
                 name in identity and str(identity[name]).casefold() == str(expected).casefold()]
-    status = 'conflict' if conflicts else 'matched' if evidence else 'unverified'
+    attachment_verified = any(name in evidence for name in ('attachmentId', 'attachmentKey'))
+    status = ('conflict' if conflicts else 'matched' if attachment_verified
+              else 'parent_only' if 'parentItemKey' in evidence else 'unverified')
+    missing = [name for name, expected in checks if expected is not None and
+               (identity is None or name not in identity)]
     markdown = sorted(cache.glob('*.md')) if cache.is_dir() else []
     images = []
     for md in markdown:
@@ -90,6 +136,7 @@ def inspect_mineru(cache, *, attachment_id=None, attachment_key=None, parent_key
                                'page_index': page, 'pdf_page': page + 1 if isinstance(page, int) and page >= 0 else None,
                                'caption': block.get('image_caption', block.get('table_caption', []))})
     return {'identity_status': status, 'matched_fields': evidence, 'conflicts': conflicts,
+            'attachment_verified': attachment_verified and not conflicts, 'missing_identity_fields': missing,
             'markdown': [str(p) for p in markdown], 'structured_files': structured,
             'images': images, 'requires_pdf_verification': True}
 
@@ -107,9 +154,9 @@ def main():
         cache.add_argument('--' + flag)
     args = parser.parse_args()
     if args.command == 'resolve':
-        data = unwrap(json.loads(args.search_json.read_text(encoding='utf-8')))
-        result = resolve_candidates(data['results'], title=args.title, doi=args.doi, key=args.key,
-                                    author=args.author, year=args.year, limited=data.get('limited', False))
+        data = json.loads(args.search_json.read_text(encoding='utf-8'))
+        result = resolve_search(data, title=args.title, doi=args.doi, key=args.key,
+                                author=args.author, year=args.year)
     else:
         result = inspect_mineru(args.cache, attachment_id=args.attachment_id,
                                 attachment_key=args.attachment_key, parent_key=args.parent_key)

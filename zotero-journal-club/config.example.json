@@ -1,3 +1,4 @@
 {
-  "default_template": "path/to/your-group-meeting-template.pptx"
+  "default_template": "path/to/your-group-meeting-template.pptx",
+  "quality_reference": "path/to/your-finished-academic-presentation.pptx"
 }

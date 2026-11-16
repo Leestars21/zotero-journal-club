@@ -1,0 +1,6 @@
+{
+  "sources": [
+    {"id": "DEMO", "kind": "synthetic_example", "origin": "presenter_inference", "locator": {"section": "人为构造的演示材料"}, "verification": "synthetic"}
+  ],
+  "claims": []
+}

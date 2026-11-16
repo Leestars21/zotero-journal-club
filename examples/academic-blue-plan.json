@@ -1,0 +1,12 @@
+{
+  "design": {"preset": "academic-blue", "label": "中文学术汇报示例"},
+  "duration_minutes": 7,
+  "slides": [
+    {"id": "cover", "page_type": "cover", "title": "从研究问题到可检验的证据", "subtitle": "可编辑版式示例", "metadata": ["所有模型与数值均为合成设置", "用于检查学术汇报的版式与信息层级"], "source": "合成设计示例", "source_ids": ["DEMO"], "notes": "说明此文件演示视觉样式，内容不来自真实论文。", "duration_seconds": 30},
+    {"id": "agenda", "page_type": "agenda", "title": "汇报结构", "agenda": ["研究问题与方法", "结果与对照", "可迁移的方法"], "source": "汇报者整理的合成示例", "source_ids": ["DEMO"], "notes": "用章节说明汇报顺序。", "duration_seconds": 30},
+    {"id": "method", "section": "1 研究方法", "title": "对照设计保持数据与计算预算一致", "flow": {"steps": [{"title": "构造数据", "detail": "固定输入范围与评价指标"}, {"title": "拟合模型", "detail": "保持计算预算一致"}, {"title": "独立检验", "detail": "检查未参与拟合的数据"}], "caption": "对照条件：相同数据、计算预算与评价指标"}, "takeaway": "独立检验决定新增参数是否有用", "emphasis": ["独立检验"], "source": "合成示例，研究问题与流程为人为构造", "source_ids": ["DEMO"], "notes": "分别解释问题和验证流程，明确对照条件。", "reading_questions": ["额外参数能否降低独立数据上的误差？"], "duration_seconds": 90},
+    {"id": "results", "section": "2 结果与对照", "title": "比较指标保留均值与散布", "table": {"headers": ["方法", "虚构误差", "对照条件"], "rows": [["A", "0.12 ± 0.02", "相同数据与预算"], ["B", "0.09 ± 0.01", "相同数据与预算"], ["C", "0.14 ± 0.03", "相同数据与预算"], ["D", "0.11 ± 0.02", "相同数据与预算"]], "caption": "数值为虚构，仅用于演示可编辑表格", "font_pt": 18}, "takeaway": "结果页同时说明指标、比较条件与适用范围", "source": "合成示例，数据为虚构", "source_ids": ["DEMO"], "notes": "强调这些数字没有论文依据，演示表格与结论层级。", "duration_seconds": 90},
+    {"id": "equation", "section": "3 模型解释", "title": "公式与变量含义分别说明", "equation": {"text": "y = ax + b", "variables": [{"symbol": "x", "meaning": "输入变量"}, {"symbol": "y", "meaning": "输出变量"}, {"symbol": "a", "meaning": "斜率"}, {"symbol": "b", "meaning": "截距"}]}, "takeaway": "先解释变量，再讨论模型假设与适用范围", "source": "合成示例，简单模型为人为构造", "source_ids": ["DEMO"], "notes": "说明简单模型的变量和线性假设。", "duration_seconds": 60},
+    {"id": "discussion", "section": "4 方法与讨论", "title": "迁移方法之前明确验证条件", "summary_rows": [{"title": "可借鉴的方法", "text": "控制对照数据与预算\n将模型拟合与独立检验分开"}, {"title": "需要验证的假设", "text": "线性关系是否适用\n样本是否覆盖目标输入"}, {"title": "下一步检验", "text": "对新输入开展留出测试\n检查误差随条件的变化"}], "takeaway": "将可迁移的方法落实为具体检验", "source": "汇报者整理，合成示例", "source_ids": ["DEMO"], "notes": "把方法收获和下一步验证联系起来。", "duration_seconds": 90}
+  ]
+}

@@ -30,5 +30,25 @@ class TemplateConfigTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 module.resolve(config_path=config)
 
+    def test_quality_reference_does_not_become_the_selected_template(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            reference, explicit = root / 'reference.pptx', root / 'new.pptx'
+            reference.write_bytes(b'reference')
+            explicit.write_bytes(b'explicit')
+            config = root / 'config.json'
+            config.write_text(json.dumps({'quality_reference': reference.name}), encoding='utf-8')
+            self.assertIsNone(module.resolve(config_path=config)['template'])
+            self.assertEqual(module.resolve_reference(config_path=config)['quality_reference'], str(reference.resolve()))
+            self.assertEqual(module.resolve_reference(explicit=explicit, config_path=config)['quality_reference'], str(explicit.resolve()))
+
+    def test_missing_quality_reference_is_explicit(self):
+        with tempfile.TemporaryDirectory() as folder:
+            config = Path(folder) / 'config.json'
+            self.assertIsNone(module.resolve_reference(config_path=config)['quality_reference'])
+            config.write_text('{"quality_reference":"missing.pptx"}', encoding='utf-8')
+            with self.assertRaises(ValueError):
+                module.resolve_reference(config_path=config)
+
 if __name__ == '__main__':
     unittest.main()

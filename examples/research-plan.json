@@ -1,0 +1,43 @@
+{
+  "duration_minutes": 5,
+  "slides": [
+    {
+      "id": "comparison",
+      "title": "合成示例：方法对照",
+      "columns": [["方法 A：线性关系", "用独立数据检验"], ["方法 B：加入额外参数", "比较时保持数据与预算一致"]],
+      "source": "合成示例，非真实论文或实验结果",
+      "source_ids": ["DEMO"],
+      "notes": "说明此页验证默认双栏；比较条件完全为合成设置。",
+      "duration_seconds": 60,
+      "reading_questions": ["增加参数是否改善独立数据上的预测？"]
+    },
+    {
+      "id": "table",
+      "title": "合成示例：可编辑对照表",
+      "table": {"headers": ["方法", "虚构误差"], "rows": [["A", "0.12 ± 0.02"], ["B", "0.09 ± 0.01"]], "caption": "数字为人为构造，仅用于验证表格编辑", "source_ids": ["DEMO"]},
+      "source": "合成示例，数据为虚构",
+      "source_ids": ["DEMO"],
+      "notes": "强调这些数字没有论文依据，演示均值与散布如何同时保留在可编辑单元格中。",
+      "duration_seconds": 60
+    },
+    {
+      "id": "method",
+      "title": "合成示例：可编辑方法流程",
+      "flow": {"steps": [{"title": "数据", "detail": "人为构造输入输出"}, "拟合", "独立检验"], "source_ids": ["DEMO"]},
+      "source": "汇报者构造的合成流程示意",
+      "source_ids": ["DEMO"],
+      "notes": "说明流程图为原生可编辑对象，并解释拟合与独立检验的区别。",
+      "duration_seconds": 60
+    },
+    {
+      "id": "equation",
+      "title": "合成示例：公式与变量说明",
+      "equation": {"text": "y = ax + b", "variables": [{"symbol": "a", "meaning": "斜率"}, {"symbol": "b", "meaning": "截距"}], "source_ids": ["DEMO"]},
+      "source": "合成示例，简单公式以可编辑文字显示",
+      "source_ids": ["DEMO"],
+      "notes": "解释斜率与截距，以及简单文字公式和复杂数学对象的处理范围。",
+      "duration_seconds": 60,
+      "takeaways": ["迁移该方法前，用独立数据检查线性假设"]
+    }
+  ]
+}
