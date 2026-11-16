@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.validation/
+output/
+测试记录.md
+验收对照.md
+参考项目对比.md
+examples/*.pptx
+examples/*preview*/
