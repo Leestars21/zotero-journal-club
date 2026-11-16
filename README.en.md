@@ -63,6 +63,15 @@ For local original figures, use `python -X utf8 zotero-journal-club/scripts/extr
 
 On Windows, if the existing Office preview helper fails when hiding PowerPoint, `zotero-journal-club/scripts/render_powerpoint.ps1` exports a native PDF for page previews. It opens the input read-only and preserves an already-running app and existing output. See [quality control](zotero-journal-club/references/quality.md).
 
+## Directory and artifact management
+
+- `zotero-journal-club/`: the installable skill, scripts and reference guidance; retain this directory level.
+- `examples/`: maintained synthetic plans, a public preview and QA records.
+- `tests/`: regression tests; use the skill's `scripts/render_preview.mjs` for previews.
+- `output/<paper-id>/`: local final PPTX, analysis, sources, QA, `assets/` and one `preview/` set; excluded from pushes.
+
+Use one output directory per paper and place temporary scripts, drafts and repeated renders in its `.work/` directory. After verifying the final files, remove the current task's intermediate versions while retaining the deliverable, required assets and evidence records. Archive useful development notes in `output/archive/`; keep the root for project documentation, the license and repository rules. Preserve the user's original papers and reference presentations in their original locations.
+
 ## Validation and feedback
 
 Run `python -X utf8 -m unittest discover -s tests` and the Codex `quick_validate.py` skill validator. UTF-8 mode is recommended on Windows. Report problems through [GitHub issues](https://github.com/Leestars21/zotero-journal-club/issues), including the input type, OS, error and expected behavior; do not publish private notes, full papers or Zotero databases.

@@ -63,6 +63,15 @@ python -X utf8 zotero-journal-club/scripts/validate_ppt.py output/demo/presentat
 
 Windows 上若现有 Office 渲染助手因隐藏 PowerPoint 窗口失败，可用 `zotero-journal-club/scripts/render_powerpoint.ps1` 将 PPTX 原生导出为 PDF，再逐页预览。它只读打开输入，保留已运行的 PowerPoint 和已有输出；详情见 [质量检查](zotero-journal-club/references/quality.md)。
 
+## 目录与文件管理
+
+- `zotero-journal-club/`：实际安装到 Codex 的技能、脚本与参考说明，保留此目录层级。
+- `examples/`：当前维护的合成计划、公开预览和质量记录。
+- `tests/`：回归测试；预览统一使用技能中的 `scripts/render_preview.mjs`。
+- `output/<paper-id>/`：本机最终 PPT、分析、来源、质量报告、`assets/` 和一套 `preview/`，不会推送。
+
+每篇论文使用一个输出目录，临时脚本、草稿和重复渲染放在其中的 `.work/`。最终文件验收后清理本任务产生的中间版本，保留成品、必要素材及证据记录。有保留价值的开发记录集中归档到 `output/archive/`，根目录只放项目说明、许可证和仓库规则。用户原始论文和参考 PPT 按原位置保留。
+
 ## 验证与反馈
 
 运行 `python -X utf8 -m unittest discover -s tests`，并使用 Codex 自带的 `quick_validate.py` 检查技能。Windows 上建议启用 Python UTF-8 模式。遇到问题可在[项目议题](https://github.com/Leestars21/zotero-journal-club/issues)反馈输入类型、操作系统、错误与预期，勿公开私人笔记、完整论文或 Zotero 数据库。

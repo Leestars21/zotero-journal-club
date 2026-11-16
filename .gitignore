@@ -1,10 +1,11 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.validation/
-output/
-测试记录.md
-验收对照.md
-参考项目对比.md
+
+# Local papers, final talks and temporary validation output.
+/.validation/
+/output/
+
+# Maintained synthetic plans/previews are public; generated decks are local.
 examples/*.pptx
 examples/*preview*/
